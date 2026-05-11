@@ -4,7 +4,7 @@ import {
   getActorById,
   createActor,
   updateActor,
-} from '../controllers/actorController.js';
+} from '../controllers/actorController';
 
 const router = Router();
 

@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
-import prisma from '../config/db.js';
-import { AppError } from '../middleware/errorHandler.js';
-import type { CreateActorBody } from '../types/index.js';
+import prisma from '../config/db';
+import { AppError } from '../middleware/errorHandler';
+import type { CreateActorBody } from '../types/index';
 
 export async function getAllActors(
   _req: Request,

@@ -75,19 +75,19 @@ export default function ScheduleSection(): JSX.Element {
 
   return (
     <section
-      className="max-w-[1400px] mx-auto px-4 md:px-6 lg:px-8 mt-6"
+      className="max-w-[1400px] mx-auto mt-6"
       aria-label="Live schedule"
     >
       <div className="bg-bg-panel rounded-2xl border border-line p-5 md:p-7 lg:p-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-0 lg:divide-x lg:divide-line">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 
           {/* ── NOW PLAYING ─────────────────────────────────── */}
-          <div className="lg:pr-8">
+          <div>
             <h3 className="text-brand font-bold text-xs tracking-widest mb-4 uppercase">
               Now Playing
             </h3>
-            <div className="flex gap-3 items-center">
-              <div className="w-24 h-16 md:w-28 md:h-20 rounded-xl overflow-hidden shrink-0 bg-bg-card">
+            <div className="flex gap-3 items-start">
+              <div className="w-20 h-14 rounded-xl overflow-hidden shrink-0 bg-bg-card">
                 <img
                   src={nowPlaying.thumbnail}
                   alt={nowPlaying.title}
@@ -95,13 +95,13 @@ export default function ScheduleSection(): JSX.Element {
                 />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-white font-semibold text-sm md:text-base truncate">
+                <p className="text-white font-semibold text-sm truncate">
                   {nowPlaying.title}
                 </p>
-                <p className="text-muted text-xs md:text-sm mt-0.5">
+                <p className="text-muted text-xs mt-0.5 line-clamp-2">
                   {nowPlaying.description}
                 </p>
-                <div className="flex items-center gap-2 mt-1.5">
+                <div className="flex items-center gap-2 mt-2">
                   <span className="text-muted text-xs">
                     {formatTimeRange(nowPlaying.scheduledAt, nowPlaying.endsAt)}
                   </span>
@@ -111,12 +111,12 @@ export default function ScheduleSection(): JSX.Element {
                 </div>
               </div>
             </div>
-            <ProgressBar value={65} className="mt-4" />
+            <ProgressBar value={65} className="mt-3" />
           </div>
 
-          {/* ── UP NEXT + PLAYING LATER ─────────────────────── */}
-          <div className="lg:px-8">
-            <h3 className="text-white font-semibold text-xs tracking-widest mb-4 uppercase">
+          {/* ── UP NEXT ─────────────────────────────────────── */}
+          <div>
+            <h3 className="text-white font-bold text-xs tracking-widest mb-4 uppercase">
               Up Next
             </h3>
             <ul className="space-y-3">
@@ -124,8 +124,11 @@ export default function ScheduleSection(): JSX.Element {
                 <ScheduleRow key={ep.id} episode={ep} />
               ))}
             </ul>
+          </div>
 
-            <h3 className="text-white font-semibold text-xs tracking-widest mt-5 mb-4 uppercase">
+          {/* ── PLAYING LATER ───────────────────────────────── */}
+          <div>
+            <h3 className="text-white font-bold text-xs tracking-widest mb-4 uppercase">
               Playing Later
             </h3>
             <ul className="space-y-3">
@@ -136,20 +139,20 @@ export default function ScheduleSection(): JSX.Element {
           </div>
 
           {/* ── REQUEST FOR NEXT MOVIE ───────────────────────── */}
-          <div className="lg:pl-8">
-            <h3 className="text-white font-semibold text-xs tracking-widest mb-4 uppercase">
+          <div>
+            <h3 className="text-white font-bold text-xs tracking-widest mb-4 uppercase">
               Request for Next Movie
             </h3>
-            <ul className="space-y-3">
+            <ul className="space-y-3 mb-4">
               {requestForNextMovie.map((item) => (
                 <RequestRow key={item.id} item={item} />
               ))}
             </ul>
 
-            <div className="mt-5">
-              <p className="text-white text-sm font-medium mb-2">Movie Name</p>
+            <div className="mt-auto pt-2">
+              <p className="text-white text-xs font-medium mb-2">Movie Name</p>
               <form onSubmit={handleRequest} className="flex items-center bg-bg-card
-                         border border-line rounded-xl overflow-hidden
+                         border border-line rounded-lg overflow-hidden
                          focus-within:border-gray-500 transition-colors">
                 <input
                   type="text"
@@ -157,13 +160,13 @@ export default function ScheduleSection(): JSX.Element {
                   onChange={(e) => setMovieRequest(e.target.value)}
                   placeholder="Type Here..."
                   aria-label="Request a movie"
-                  className="flex-1 bg-transparent px-4 py-2.5 text-sm
+                  className="flex-1 bg-transparent px-3 py-2 text-xs
                              text-white placeholder-muted focus:outline-none min-w-0"
                 />
                 <button
                   type="submit"
                   aria-label="Submit request"
-                  className="px-3 py-2.5 text-brand hover:text-brand-light transition-colors"
+                  className="px-2.5 py-2 text-brand hover:text-brand-light transition-colors"
                 >
                   <SlidersHorizontal className="w-4 h-4" />
                 </button>

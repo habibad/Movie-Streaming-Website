@@ -14,30 +14,16 @@ export default function Logo({ className = '', size = 'md' }: LogoProps): JSX.El
 
   return (
     <div className={`flex items-center gap-2.5 ${className}`}>
-      {/* Icon box */}
+      {/* Icon box ${s.box} */}
       <div
-        className={`relative ${s.box} rounded-lg bg-white flex items-center justify-center shadow-sm shrink-0`}
+        className={`relative w-25 h-20 rounded-lg bg-transparent flex items-center justify-center shadow-sm overflow-hidden shrink-0`}
       >
-        <svg
-          viewBox="0 0 32 32"
-          className={s.icon}
-          xmlns="http://www.w3.org/2000/svg"
-          aria-hidden="true"
-        >
-          {/* trunk */}
-          <rect x="14.5" y="19" width="3" height="10" fill="#3B2412" rx="1" />
-          {/* foliage layers */}
-          <ellipse cx="11" cy="14" rx="6.5" ry="7.5" fill="#1F8F3A" />
-          <ellipse cx="21" cy="12" rx="6" ry="7" fill="#E50914" />
-          <ellipse cx="16" cy="18" rx="6.5" ry="6" fill="#0F5F25" />
-          <ellipse cx="22.5" cy="17" rx="3.5" ry="4" fill="#FF1F2D" />
-        </svg>
+        <img
+          src={`${import.meta.env.BASE_URL}assets/images/logo.png`}
+          alt="BlackTree.TV logo"
+          className="w-full h-full object-contain"
+        />
       </div>
-
-      {/* Wordmark */}
-      <span className={`font-semibold tracking-wide text-white ${s.text}`}>
-        BlackTree.<span className="text-gray-300">TV</span>
-      </span>
     </div>
   );
 }

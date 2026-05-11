@@ -5,7 +5,7 @@ import {
   getUpcoming,
   createEpisode,
   getEpisodeById,
-} from '../controllers/episodeController.js';
+} from '../controllers/episodeController';
 
 const router = Router();
 

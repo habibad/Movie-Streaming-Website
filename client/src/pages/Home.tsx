@@ -1,5 +1,4 @@
 import HeroSection from '@/components/home/HeroSection';
-import ScheduleSection from '@/components/home/ScheduleSection';
 import FeaturedActors from '@/components/home/FeaturedActors';
 import MovieCarousel from '@/components/home/MovieCarousel';
 import ExclusiveInterview from '@/components/home/ExclusiveInterview';
@@ -13,7 +12,7 @@ export default function Home(): JSX.Element {
       <HeroSection />
 
       {/* 2. Schedule — now playing / up next / playing later / requests */}
-      <ScheduleSection />
+      {/* <ScheduleSection /> */}
 
       {/* 3. Featured Actors carousel */}
       <FeaturedActors />

@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from 'express';
-import prisma from '../config/db.js';
-import { AppError } from '../middleware/errorHandler.js';
+import prisma from '../config/db';
+import { AppError } from '../middleware/errorHandler';
 
 export async function getAllInterviews(
   _req: Request,

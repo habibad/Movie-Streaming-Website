@@ -4,6 +4,7 @@ import {
   Cast, MoreVertical, X, Send, Eye,
 } from 'lucide-react';
 import LiveBadge from '@/components/ui/LiveBadge';
+import ScheduleSection from '@/components/home/ScheduleSection';
 import { heroData, liveChat } from '@/utils/mockData';
 import type { ChatMessage } from '@/types';
 
@@ -71,10 +72,13 @@ export default function HeroSection(): JSX.Element {
 
   return (
     <section
-      className="max-w-[1400px] mx-auto px-4 md:px-6 lg:px-8 pt-4 md:pt-6"
-      aria-label="Featured live stream"
+      className="relative w-full bg-cover pt-[30px] pb-[50px] bg-center bg-no-repeat"
+      style={{ backgroundImage: `url(${heroData.image})` }}
+      aria-label="Featured live stream bg"
     >
-      <div className="grid grid-cols-1 xl:grid-cols-[1fr_360px] gap-4">
+      <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-black/20 to-transparent pointer-events-none" />
+      <div className="relative max-w-[1400px] mx-auto px-4 md:px-6 lg:px-8 pt-4 md:pt-6 flex flex-col items-center">
+        <div className="w-full grid grid-cols-1 xl:grid-cols-[1fr_360px] gap-4">
 
         {/* ── Player ─────────────────────────────────────────── */}
         <div className="relative rounded-2xl overflow-hidden bg-bg-card
@@ -225,6 +229,10 @@ export default function HeroSection(): JSX.Element {
           </div>
         </aside>
       </div>
-    </section>
+      <div className="w-full">
+        <ScheduleSection />
+      </div>
+    </div>
+  </section>
   );
 }

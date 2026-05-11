@@ -1,9 +1,9 @@
 import type { Request, Response, NextFunction } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import prisma from '../config/db.js';
-import { AppError } from '../middleware/errorHandler.js';
-import type { RegisterBody, LoginBody, AuthPayload } from '../types/index.js';
+import prisma from '../config/db';
+import { AppError } from '../middleware/errorHandler';
+import type { RegisterBody, LoginBody, AuthPayload } from '../types/index';
 
 const JWT_SECRET = process.env.JWT_SECRET ?? 'dev_secret';
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN ?? '7d';

@@ -1,7 +1,7 @@
 import type { Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import type { AuthRequest, AuthPayload } from '../types/index.js';
-import { AppError } from './errorHandler.js';
+import type { AuthRequest, AuthPayload } from '../types/index';
+import { AppError } from './errorHandler';
 
 export function requireAuth(
   req: AuthRequest,

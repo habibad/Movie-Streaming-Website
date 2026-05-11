@@ -4,12 +4,12 @@ import cors from 'cors';
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
 
-import movieRoutes from './routes/movieRoutes.js';
-import actorRoutes from './routes/actorRoutes.js';
-import episodeRoutes from './routes/episodeRoutes.js';
-import authRoutes from './routes/authRoutes.js';
-import interviewRoutes from './routes/interviewRoutes.js';
-import { errorHandler } from './middleware/errorHandler.js';
+import movieRoutes from './routes/movieRoutes';
+import actorRoutes from './routes/actorRoutes';
+import episodeRoutes from './routes/episodeRoutes';
+import authRoutes from './routes/authRoutes';
+import interviewRoutes from './routes/interviewRoutes';
+import { errorHandler } from './middleware/errorHandler';
 
 const app = express();
 
