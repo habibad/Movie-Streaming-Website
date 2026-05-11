@@ -1,0 +1,76 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-bg-base text-white font-sans;
+    font-feature-settings: 'cv11', 'ss01';
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: #0a0a0a; }
+  ::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: #444; }
+
+  * { box-sizing: border-box; }
+}
+
+@layer components {
+  /* Red left-bar section title */
+  .section-title {
+    @apply relative pl-4 text-xl md:text-2xl font-semibold text-white;
+  }
+  .section-title::before {
+    content: '';
+    @apply absolute left-0 top-0.5 bottom-0.5 w-1 bg-brand rounded-full;
+  }
+
+  /* Primary solid red button */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3
+           bg-brand hover:bg-brand-light active:bg-brand-dark text-white
+           font-semibold rounded-lg transition-all duration-200
+           focus:outline-none focus:ring-2 focus:ring-brand/50;
+  }
+
+  /* Outline red button (Live badges, etc.) */
+  .btn-outline-red {
+    @apply inline-flex items-center justify-center px-3 py-1
+           border border-brand text-brand text-xs font-semibold rounded
+           hover:bg-brand hover:text-white transition-colors;
+  }
+
+  /* Skeleton shimmer */
+  .skeleton {
+    @apply bg-bg-card rounded;
+    background: linear-gradient(90deg, #1a1a1a 25%, #252525 50%, #1a1a1a 75%);
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite linear;
+  }
+
+  /* Hide scrollbar — for carousels */
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+}
+
+@layer utilities {
+  .overlay-bottom {
+    background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.9) 100%);
+  }
+  .overlay-top {
+    background: linear-gradient(180deg, rgba(0,0,0,0.7) 0%, transparent 60%);
+  }
+  .text-gradient-red {
+    background: linear-gradient(135deg, #ff1f2d, #e50914);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}

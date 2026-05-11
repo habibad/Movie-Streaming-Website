@@ -1,0 +1,58 @@
+import 'dotenv/config';
+import express from 'express';
+import cors from 'cors';
+import morgan from 'morgan';
+import cookieParser from 'cookie-parser';
+
+import movieRoutes from './routes/movieRoutes.js';
+import actorRoutes from './routes/actorRoutes.js';
+import episodeRoutes from './routes/episodeRoutes.js';
+import authRoutes from './routes/authRoutes.js';
+import interviewRoutes from './routes/interviewRoutes.js';
+import { errorHandler } from './middleware/errorHandler.js';
+
+const app = express();
+
+// ── Middleware ───────────────────────────────────────────────────
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL ?? 'http://localhost:5173',
+    credentials: true,
+  })
+);
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+
+if (process.env.NODE_ENV !== 'test') {
+  app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
+}
+
+// ── Health check ─────────────────────────────────────────────────
+app.get('/api/health', (_req, res) => {
+  res.json({ ok: true, env: process.env.NODE_ENV, ts: new Date().toISOString() });
+});
+
+// ── API routes ───────────────────────────────────────────────────
+app.use('/api/auth', authRoutes);
+app.use('/api/movies', movieRoutes);
+app.use('/api/actors', actorRoutes);
+app.use('/api/episodes', episodeRoutes);
+app.use('/api/interviews', interviewRoutes);
+
+// ── 404 ──────────────────────────────────────────────────────────
+app.use((_req, res) => {
+  res.status(404).json({ success: false, error: 'Route not found' });
+});
+
+// ── Global error handler ─────────────────────────────────────────
+app.use(errorHandler);
+
+// ── Start ────────────────────────────────────────────────────────
+const PORT = parseInt(process.env.PORT ?? '5000', 10);
+app.listen(PORT, () => {
+  console.log(`\n✅  BlackTree.TV API  →  http://localhost:${PORT}`);
+  console.log(`   ENV: ${process.env.NODE_ENV ?? 'development'}\n`);
+});
+
+export default app;
