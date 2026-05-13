@@ -5,8 +5,6 @@ import ScheduleSection from '@/components/home/ScheduleSection';
 import { heroData, liveChat } from '@/utils/mockData';
 import type { ChatMessage } from '@/types';
 
-
-
 /* ── Sub-component: single chat message ─────────────────────── */
 interface ChatMessageRowProps {
   msg: ChatMessage;
@@ -36,9 +34,8 @@ function ChatMessageRow({ msg }: ChatMessageRowProps): JSX.Element {
 
 /* ── Main component ─────────────────────────────────────────── */
 export default function HeroSection(): JSX.Element {
-
   const [chatMsg, setChatMsg] = useState<string>('');
-
+  const [showComments, setShowComments] = useState<boolean>(true);
 
   const handleChatSend = (): void => {
     if (!chatMsg.trim()) return;
@@ -57,14 +54,20 @@ export default function HeroSection(): JSX.Element {
     >
       <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-black/20 to-transparent pointer-events-none" />
       <div className="relative max-w-[1400px] mx-auto px-4 md:px-6 lg:px-8 pt-4 md:pt-6 flex flex-col items-center">
-        <div className="w-full grid grid-cols-1 xl:grid-cols-[1fr_360px] gap-4">
+
+        {/* Player + Chat grid — second column only shows when comments are open */}
+        <div className={`w-full grid grid-cols-1 gap-4 ${showComments ? 'xl:grid-cols-[1fr_360px]' : ''}`}>
 
           {/* ── Player ─────────────────────────────────────────── */}
-          <LiveVideoPlayer />
-          {/* ── Live Chat (desktop sidebar) ─────────────────────── */}
+          <LiveVideoPlayer
+            showComments={showComments}
+            onToggleComments={() => setShowComments((v) => !v)}
+          />
+
+          {/* ── Live Chat sidebar (xl only, hidden when comments toggled off) ── */}
           <aside
-            className="hidden xl:flex flex-col bg-bg-panel rounded-2xl
-                       border border-line h-[530px]"
+            className={`flex-col bg-bg-panel rounded-2xl border border-line h-[630px]
+                        ${showComments ? 'hidden xl:flex' : 'hidden'}`}
             aria-label="Live chat"
           >
             {/* Chat header */}
@@ -79,7 +82,11 @@ export default function HeroSection(): JSX.Element {
                 <button aria-label="More options" className="hover:text-white transition-colors p-1">
                   <MoreVertical className="w-4 h-4" />
                 </button>
-                <button aria-label="Close chat" className="hover:text-white transition-colors p-1">
+                <button
+                  aria-label="Close chat"
+                  className="hover:text-white transition-colors p-1"
+                  onClick={() => setShowComments(false)}
+                >
                   <X className="w-4 h-4" />
                 </button>
                 <button aria-label="Chat on/off" className="w-8 h-4 rounded-full bg-brand relative">
@@ -127,6 +134,7 @@ export default function HeroSection(): JSX.Element {
             </div>
           </aside>
         </div>
+
         <div className="w-full">
           <ScheduleSection />
         </div>
