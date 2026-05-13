@@ -121,3 +121,69 @@ export type WithChildren<T = Record<string, unknown>> = T & {
 };
 
 export type Optional<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
+
+// ─── APPEND THESE TYPES TO YOUR EXISTING client/src/types/index.ts ───
+// (Don't replace the file — just add these at the bottom)
+
+export interface LiveCategory {
+  id: string;
+  label: string;
+}
+
+export type ChannelIcon = 'music' | 'news' | 'gaming' | 'food';
+
+export interface TrendingChannel {
+  id: string;
+  title: string;
+  subtitle: string;
+  viewers: string;
+  thumbnail: string;
+  icon: ChannelIcon;
+  isLive: boolean;
+  quality?: string; // e.g. "1080p"
+  progress?: number; // 0–100, red bar at bottom of thumbnail
+}
+
+export type UpcomingEventType = 'premiere' | 'sports' | 'cinema';
+
+export interface UpcomingEvent {
+  id: string;
+  type: UpcomingEventType;
+  label: string;       // "EXCLUSIVE PREMIERE", "SPORTS", "CINEMA"
+  title: string;
+  description?: string;
+  thumbnail?: string;
+  startsIn?: string;   // "02:45:12"
+  location?: string;   // "Live from LA • Tonight 8PM"
+  attendeeAvatars?: string[];
+  attendeeExtra?: string; // "+10k"
+  badge?: string;      // "24H Event"
+  duration?: string;   // "Curated Selection • Weekend Only"
+}
+
+
+
+// ─── APPEND THESE TYPES TO YOUR EXISTING client/src/types/index.ts ───
+// (Don't replace the file — just add these at the bottom)
+
+export interface MovieHeroSlide {
+  id: string;
+  title: string;
+  description: string;
+  releaseDate: string;     // "05-12-2026"
+  image: string;
+}
+
+export interface SubGenre {
+  id: string;
+  number: string;          // "01", "02", "03"
+  title: string;
+  description: string;
+  avatars: string[];
+  extra?: string;          // "+4k", "+2k"
+}
+
+export interface SelectOption {
+  value: string;
+  label: string;
+}
