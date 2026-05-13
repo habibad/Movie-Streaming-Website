@@ -187,3 +187,46 @@ export interface SelectOption {
   value: string;
   label: string;
 }
+
+// ─── APPEND THESE TYPES TO YOUR EXISTING client/src/types/index.ts ───
+
+export type CastRole = 'Actor' | 'Director' | 'Writer' | 'Producer';
+
+export interface CastMember {
+  id: string;
+  name: string;
+  role: CastRole;
+  image: string;
+}
+
+export interface TrailerVideo {
+  id: string;
+  label: string;        // "Official Trailer", "Teaser", "Clips"
+  thumbnail: string;
+  videoUrl?: string;    // YouTube URL or YT video ID
+  duration?: string;    // "2:45"
+  highlighted?: boolean;
+}
+
+/**
+ * Full movie details — extends the existing Movie interface
+ * with everything needed by the details page.
+ */
+export interface MovieDetails {
+  id: string;
+  title: string;
+  poster: string;             // large landscape image used in the hero
+  thumbnail?: string;         // small portrait poster
+  genres: string[];           // ["Action", "Fantasy", "Drama"]
+  year: number;
+  duration: string;           // "2h 35m"
+  rating: number;             // IMDb rating 0–10
+  qualityLabel: string;       // "HD / 4K"
+  audioLanguages: string;     // "English | Spanish"
+  hasCaptions: boolean;
+  ratingCertificate: string;  // "PG-13", "R", "TV-MA"
+  description: string;
+  liveChannelLabel?: string;  // "INCLUDED IN LIVE CHANNEL"
+  cast: CastMember[];
+  trailers: TrailerVideo[];
+}

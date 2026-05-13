@@ -1,17 +1,25 @@
+// REPLACE your existing client/src/components/movies/MoviesGrid.tsx with this version.
+// Only change: each MovieCard is now wrapped in a <Link> to /movies/:id
+
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Play } from 'lucide-react';
 import { allMovies } from '@/utils/moviesData';
 import Pagination from '@/components/ui/Pagination';
 import type { Movie } from '@/types';
 
-/* ── Single poster card ─────────────────────────────────────── */
+/* ── Single poster card (now clickable) ───────────────────────── */
 interface MovieCardProps {
   movie: Movie;
 }
 
 function MovieCard({ movie }: MovieCardProps): JSX.Element {
   return (
-    <article className="group cursor-pointer">
+    <Link
+      to={`/movies/${movie.id}`}
+      className="group block"
+      aria-label={`View ${movie.title}`}
+    >
       <div className="relative aspect-[2/3] rounded-xl overflow-hidden bg-bg-card">
         <img
           src={movie.poster}
@@ -25,23 +33,24 @@ function MovieCard({ movie }: MovieCardProps): JSX.Element {
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
 
         {/* Play overlay on hover */}
-        <button
-          aria-label={`Play ${movie.title}`}
+        <div
+          aria-hidden="true"
           className="absolute inset-0 flex items-center justify-center
                      opacity-0 group-hover:opacity-100 transition-opacity duration-300"
         >
           <span className="w-12 h-12 rounded-full bg-brand/90 flex items-center justify-center
                            shadow-glow group-hover:scale-110 transition-transform">
-            <Play className="w-5 h-5 text-white fill-current ml-0.5" aria-hidden="true" />
+            <Play className="w-5 h-5 text-white fill-current ml-0.5" />
           </span>
-        </button>
+        </div>
       </div>
 
       {/* Title below poster */}
-      <p className="mt-2 md:mt-3 text-center text-xs md:text-sm text-white leading-snug line-clamp-2 px-1">
+      <p className="mt-2 md:mt-3 text-center text-xs md:text-sm text-white leading-snug line-clamp-2 px-1
+                    group-hover:text-brand transition-colors">
         {movie.title}
       </p>
-    </article>
+    </Link>
   );
 }
 

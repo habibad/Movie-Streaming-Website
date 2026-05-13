@@ -4,6 +4,7 @@ import Home from '@/pages/Home';
 import AboutUs from '@/pages/AboutUs';
 import Live from './pages/Live';
 import Movies from './pages/Movies';
+import MovieDetails from './pages/MovieDetails';
 
 export default function App(): JSX.Element {
   return (
@@ -13,6 +14,7 @@ export default function App(): JSX.Element {
         <Route path="/about" element={<AboutUs />} />
         <Route path="/live"        element={<Live />} />
          <Route path="/movies"      element={<Movies />} />
+         <Route path="/movies/:id" element={<MovieDetails />} />
         {/* Future routes — add pages here as you build them:
             <Route path="/movies"      element={<Movies />} />
             <Route path="/movies/:id"  element={<MovieDetail />} />
