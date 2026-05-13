@@ -16,8 +16,6 @@ export default function App(): JSX.Element {
          <Route path="/movies"      element={<Movies />} />
          <Route path="/movies/:id" element={<MovieDetails />} />
         {/* Future routes — add pages here as you build them:
-            <Route path="/movies"      element={<Movies />} />
-            <Route path="/movies/:id"  element={<MovieDetail />} />
             <Route path="/shows"       element={<Shows />} />
             <Route path="/interviews"  element={<Interviews />} />
             <Route path="/actors"      element={<Actors />} />

@@ -49,7 +49,7 @@ export default function HeroSection(): JSX.Element {
   return (
     <section
       className="relative w-full bg-cover pt-[30px] pb-[50px] bg-center bg-no-repeat"
-      style={{ backgroundImage: `url(${heroData.image})` }}
+      style={{ backgroundImage: "url('/assets/images/hero-bg-final.jpg')" }}
       aria-label="Featured live stream bg"
     >
       <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-black/20 to-transparent pointer-events-none" />
