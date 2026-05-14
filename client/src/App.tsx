@@ -6,6 +6,8 @@ import Live from './pages/Live';
 import Movies from './pages/Movies';
 import MovieDetails from './pages/MovieDetails';
 import Interviews from './pages/Interviews';
+import Actors from './pages/Actors';
+import ActorDetail from './pages/ActorDetail';
 
 export default function App(): JSX.Element {
   return (
@@ -17,11 +19,11 @@ export default function App(): JSX.Element {
          <Route path="/movies"      element={<Movies />} />
          <Route path="/movies/:id" element={<MovieDetails />} />
          <Route path="/interviews"  element={<Interviews />} />
+         <Route path="/actors"      element={<Actors />} />
+         <Route path="/actors/:id"  element={<ActorDetail />} />
         {/* Future routes — add pages here as you build them:
             <Route path="/shows"       element={<Shows />} />
-            <Route path="/interviews"  element={<Interviews />} />
-            <Route path="/actors"      element={<Actors />} />
-            <Route path="/actors/:id"  element={<ActorDetail />} />
+            
         */}
       </Route>
     </Routes>

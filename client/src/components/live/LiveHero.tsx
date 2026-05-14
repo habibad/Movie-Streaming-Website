@@ -65,7 +65,7 @@ export default function LiveHero(): JSX.Element {
 
         {/* ── Live chat sidebar ────────────────────────────────── */}
         <aside
-          className={`flex-col bg-bg-panel rounded-2xl border border-line h-[530px]
+          className={`flex-col bg-bg-panel rounded-2xl border border-line h-[630px]
                       ${showComments ? 'hidden xl:flex' : 'hidden'}`}
           aria-label="Live chat"
         >

@@ -8,7 +8,7 @@ const NAV_LINKS: NavLinkType[] = [
   { label: 'Home', to: '/' },
    { label: 'About Us', to: '/about' },
   { label: 'Live', to: '/live' },
-  { label: 'Shows', to: '/shows' },
+  // { label: 'Shows', to: '/shows' },
   { label: 'Movies', to: '/movies' },
   { label: 'Interviews', to: '/interviews' },
   { label: 'Actors', to: '/actors' },
