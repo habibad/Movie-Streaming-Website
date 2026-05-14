@@ -291,8 +291,9 @@ export default function LiveVideoPlayer({ showComments, onToggleComments }: Live
   /* ── Render ───────────────────────────────────────────────── */
   return (
     <div
-      className="relative rounded-2xl overflow-hidden bg-bg-card
-                    aspect-video xl:aspect-auto xl:h-[630px]"
+      className={`relative rounded-2xl overflow-hidden bg-bg-card
+                    aspect-video xl:aspect-auto transition-[height] duration-500 ease-in-out
+                    ${showComments ? 'xl:h-[630px]' : 'xl:h-[calc(100vh-80px)]'}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >

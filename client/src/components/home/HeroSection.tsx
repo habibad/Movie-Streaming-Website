@@ -48,7 +48,9 @@ export default function HeroSection(): JSX.Element {
 
   return (
     <section
-      className="relative w-full bg-cover pt-[30px] pb-[50px] bg-center bg-no-repeat"
+      className={`relative w-full bg-cover bg-center bg-no-repeat transition-[padding] duration-500 ease-in-out ${
+        showComments ? 'pt-[30px] pb-[50px]' : 'pt-0 pb-0'
+      }`}
       style={{ backgroundImage: "url('/assets/images/hero-bg-final.jpg')" }}
       aria-label="Featured live stream bg"
     >
