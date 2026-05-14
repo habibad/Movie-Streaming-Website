@@ -262,3 +262,39 @@ export interface InterviewFilterOption {
   label: string;
   hasLiveDot?: boolean;
 }
+
+// ─── APPEND THESE TYPES TO YOUR EXISTING client/src/types/index.ts ───
+
+export interface LoginPayload {
+  email: string;
+  password: string;
+}
+
+export interface SignupPayload {
+  name: string;
+  email: string;
+  password: string;
+}
+
+export interface ForgotPasswordPayload {
+  email: string;
+}
+
+export interface VerifyCodePayload {
+  email: string;
+  code: string;        // 6-digit OTP
+}
+
+export interface ResetPasswordPayload {
+  email: string;
+  code: string;
+  newPassword: string;
+}
+
+export interface AuthResponse {
+  user: User;
+  token: string;
+}
+
+/** Provider for the SSO buttons on the signup screen */
+export type AuthProvider = 'google' | 'apple';

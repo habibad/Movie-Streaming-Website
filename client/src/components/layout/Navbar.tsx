@@ -1,20 +1,22 @@
 import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
-import { Search, Menu, X } from 'lucide-react';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { Search, Menu, X, UserCircle, LogOut } from 'lucide-react';
 import Logo from './Logo';
+import { useAuth } from '@/context/AuthContext';
 import type { NavLink as NavLinkType } from '@/types';
 
 const NAV_LINKS: NavLinkType[] = [
-  { label: 'Home', to: '/' },
-   { label: 'About Us', to: '/about' },
-  { label: 'Live', to: '/live' },
-  // { label: 'Shows', to: '/shows' },
-  { label: 'Movies', to: '/movies' },
+  { label: 'Home',       to: '/' },
+  { label: 'About Us',   to: '/about' },
+  { label: 'Live',       to: '/live' },
+  { label: 'Movies',     to: '/movies' },
   { label: 'Interviews', to: '/interviews' },
-  { label: 'Actors', to: '/actors' },
+  { label: 'Actors',     to: '/actors' },
 ];
 
 export default function Navbar(): JSX.Element {
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
 
   const navLinkClass = ({ isActive }: { isActive: boolean }): string =>
@@ -28,6 +30,15 @@ export default function Navbar(): JSX.Element {
         ? 'bg-bg-card text-white'
         : 'text-gray-400 hover:bg-bg-card hover:text-white'
     }`;
+
+  /* Fallback avatar: initials via ui-avatars when no avatar URL */
+  const avatarSrc = user?.avatar
+    ?? `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.name ?? 'U')}&background=e50914&color=fff&size=80`;
+
+  const handleLogout = (): void => {
+    logout();
+    navigate('/');
+  };
 
   return (
     <header className="sticky top-0 z-50 bg-bg-base/95 backdrop-blur border-b border-line">
@@ -57,18 +68,52 @@ export default function Navbar(): JSX.Element {
             <Search className="w-5 h-5" />
           </button>
 
-          {/* User pill — tablet+ */}
-          <div className="hidden sm:flex items-center gap-3 bg-bg-card border border-line rounded-full pl-1 pr-4 py-1 cursor-pointer hover:border-gray-500 transition-colors">
-            <img
-              src="https://i.pravatar.cc/40?img=68"
-              alt="User avatar"
-              className="w-8 h-8 rounded-full object-cover"
-            />
-            <div className="leading-tight">
-              <p className="text-xs font-semibold text-white">Hi Jamal</p>
-              <p className="text-[10px] text-muted">Premium User</p>
+          {/* ── User pill — desktop ── */}
+          {user ? (
+            /* Logged in */
+            <div className="hidden sm:flex items-center gap-3 bg-bg-card border border-line
+                            rounded-full pl-1 pr-2 py-1 hover:border-gray-500 transition-colors group">
+              <img
+                src={avatarSrc}
+                alt={user.name ?? 'User avatar'}
+                className="w-8 h-8 rounded-full object-cover shrink-0"
+              />
+              <div className="leading-tight">
+                <p className="text-xs font-semibold text-white">
+                  Hi {user.name?.split(' ')[0] ?? 'User'}
+                </p>
+                <p className="text-[10px] text-muted">
+                  {user.isPremium ? 'Premium User' : 'Free User'}
+                </p>
+              </div>
+              {/* Logout icon */}
+              <button
+                onClick={handleLogout}
+                aria-label="Sign out"
+                title="Sign out"
+                className="ml-1 p-1.5 rounded-full text-muted hover:text-brand hover:bg-brand/10 transition-colors"
+              >
+                <LogOut className="w-3.5 h-3.5" />
+              </button>
             </div>
-          </div>
+          ) : (
+            /* Not logged in */
+            <button
+              onClick={() => navigate('/signin')}
+              className="hidden sm:flex items-center gap-3 bg-bg-card border border-line
+                         rounded-full pl-1 pr-4 py-1 hover:border-gray-500 transition-colors"
+              aria-label="Sign in"
+            >
+              <div className="w-8 h-8 rounded-full bg-bg-elevated border border-line
+                              flex items-center justify-center shrink-0">
+                <UserCircle className="w-5 h-5 text-gray-400" />
+              </div>
+              <div className="leading-tight">
+                <p className="text-xs font-semibold text-white">Sign In</p>
+                <p className="text-[10px] text-muted">Get Premium Access</p>
+              </div>
+            </button>
+          )}
 
           {/* Mobile hamburger */}
           <button
@@ -101,6 +146,46 @@ export default function Navbar(): JSX.Element {
                 </NavLink>
               </li>
             ))}
+
+            {/* Auth entry in mobile drawer */}
+            <li className="pt-2 border-t border-line mt-2">
+              {user ? (
+                <div className="flex items-center justify-between px-4 py-2.5">
+                  <div className="flex items-center gap-3">
+                    <img
+                      src={avatarSrc}
+                      alt={user.name ?? 'User'}
+                      className="w-8 h-8 rounded-full object-cover"
+                    />
+                    <div className="leading-tight">
+                      <p className="text-sm font-semibold text-white">
+                        {user.name ?? 'User'}
+                      </p>
+                      <p className="text-[10px] text-muted">
+                        {user.isPremium ? 'Premium User' : 'Free User'}
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => { setMenuOpen(false); handleLogout(); }}
+                    className="flex items-center gap-1.5 text-xs text-muted hover:text-brand transition-colors"
+                  >
+                    <LogOut className="w-3.5 h-3.5" />
+                    Sign Out
+                  </button>
+                </div>
+              ) : (
+                <NavLink
+                  to="/signin"
+                  onClick={() => setMenuOpen(false)}
+                  className="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium
+                             text-gray-400 hover:bg-bg-card hover:text-white transition-colors"
+                >
+                  <UserCircle className="w-5 h-5" />
+                  Sign In
+                </NavLink>
+              )}
+            </li>
           </ul>
         </nav>
       )}

@@ -69,7 +69,7 @@ export interface LiveVideoPlayerProps {
   onToggleComments: () => void;
 }
 
-const YOUTUBE_VIDEO_ID = '8JZlssT12Uw';
+const YOUTUBE_VIDEO_ID = 'SLahFiAo6bY';
 
 export default function LiveVideoPlayer({ showComments, onToggleComments }: LiveVideoPlayerProps): JSX.Element {
   const playerRef           = useRef<YTPlayer | null>(null);
