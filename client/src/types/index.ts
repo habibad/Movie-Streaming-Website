@@ -230,3 +230,35 @@ export interface MovieDetails {
   cast: CastMember[];
   trailers: TrailerVideo[];
 }
+
+// ─── APPEND THESE TYPES TO YOUR EXISTING client/src/types/index.ts ───
+
+export type InterviewCategory = 'exclusive' | 'behind-the-scenes' | 'live';
+
+export type InterviewFilter = 'all' | InterviewCategory;
+
+export interface InterviewCard {
+  id: string;
+  title: string;
+  description: string;
+  thumbnail: string;
+  duration: string;          // "12:45"
+  category: InterviewCategory;
+  isLive?: boolean;
+}
+
+export interface InterviewHeroSlide {
+  id: string;
+  label: string;             // "EXCLUSIVE INTERVIW"
+  name: string;              // "TARAJI P. HENSON"
+  tagline: string;
+  description: string;
+  image: string;
+  videoUrl?: string;
+}
+
+export interface InterviewFilterOption {
+  id: InterviewFilter;
+  label: string;
+  hasLiveDot?: boolean;
+}
