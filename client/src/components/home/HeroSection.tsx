@@ -2,7 +2,7 @@ import { useState, type KeyboardEvent } from 'react';
 import { MoreVertical, X, Send } from 'lucide-react';
 import LiveVideoPlayer from '@/components/feature_component/LiveVideoPlayer';
 import ScheduleSection from '@/components/home/ScheduleSection';
-import { heroData, liveChat } from '@/utils/mockData';
+import { liveChat } from '@/utils/mockData';
 import type { ChatMessage } from '@/types';
 
 /* ── Sub-component: single chat message ─────────────────────── */

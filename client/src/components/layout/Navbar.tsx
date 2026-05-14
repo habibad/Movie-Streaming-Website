@@ -6,7 +6,7 @@ import type { NavLink as NavLinkType } from '@/types';
 
 const NAV_LINKS: NavLinkType[] = [
   { label: 'Home', to: '/' },
-   { label: 'AboutUs', to: '/about' },
+   { label: 'About Us', to: '/about' },
   { label: 'Live', to: '/live' },
   { label: 'Shows', to: '/shows' },
   { label: 'Movies', to: '/movies' },
