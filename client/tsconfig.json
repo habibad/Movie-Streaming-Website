@@ -13,7 +13,6 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-
     /* Strict type checking */
     "strict": true,
     "noUnusedLocals": true,
@@ -21,6 +20,7 @@
     "noFallthroughCasesInSwitch": true,
 
     /* Path aliases */
+    "ignoreDeprecations": "6.0",
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]

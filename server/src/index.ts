@@ -4,12 +4,10 @@ import cors from 'cors';
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
 
-import movieRoutes from './routes/movieRoutes';
-import actorRoutes from './routes/actorRoutes';
-import episodeRoutes from './routes/episodeRoutes';
-import authRoutes from './routes/authRoutes';
-import interviewRoutes from './routes/interviewRoutes';
 import { errorHandler } from './middleware/errorHandler';
+import router from './router';
+
+
 
 const app = express();
 
@@ -24,21 +22,19 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+
 if (process.env.NODE_ENV !== 'test') {
   app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
 }
+
+app.use("/api/v1", router);
 
 // ── Health check ─────────────────────────────────────────────────
 app.get('/api/health', (_req, res) => {
   res.json({ ok: true, env: process.env.NODE_ENV, ts: new Date().toISOString() });
 });
 
-// ── API routes ───────────────────────────────────────────────────
-app.use('/api/auth', authRoutes);
-app.use('/api/movies', movieRoutes);
-app.use('/api/actors', actorRoutes);
-app.use('/api/episodes', episodeRoutes);
-app.use('/api/interviews', interviewRoutes);
+
 
 // ── 404 ──────────────────────────────────────────────────────────
 app.use((_req, res) => {
@@ -49,7 +45,7 @@ app.use((_req, res) => {
 app.use(errorHandler);
 
 // ── Start ────────────────────────────────────────────────────────
-const PORT = parseInt(process.env.PORT ?? '5000', 10);
+const PORT = parseInt(process.env.PORT ?? '4000', 10);
 app.listen(PORT, () => {
   console.log(`\n✅  BlackTree.TV API  →  http://localhost:${PORT}`);
   console.log(`   ENV: ${process.env.NODE_ENV ?? 'development'}\n`);
