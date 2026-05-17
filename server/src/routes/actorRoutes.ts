@@ -1,16 +1,12 @@
 import { Router } from 'express';
 import {
-  getAllActors,
   getActorById,
-  createActor,
-  updateActor,
+  getAllActors
 } from '../controllers/actorController';
 
 const router = Router();
 
-router.get('/', getAllActors);
-router.get('/:id', getActorById);
-router.post('/', createActor);
-router.patch('/:id', updateActor);
+router.get('/all-actors', getAllActors);
+router.get('/actors/:id', getActorById);
 
 export default router;

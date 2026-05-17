@@ -5,11 +5,13 @@ import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
 
 import { errorHandler } from './middleware/errorHandler';
-import router from './router';
+import actorRouter from './router/index'
+import authRouter from './routes/authRoutes';
 
 
 
 const app = express();
+app.use('/api/v1/auth', authRouter);
 
 // ── Middleware ───────────────────────────────────────────────────
 app.use(
@@ -27,7 +29,8 @@ if (process.env.NODE_ENV !== 'test') {
   app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
 }
 
-app.use("/api/v1", router);
+app.use("/api/v1", actorRouter);
+app.use('/api/v1/auth', authRouter);
 
 // ── Health check ─────────────────────────────────────────────────
 app.get('/api/health', (_req, res) => {

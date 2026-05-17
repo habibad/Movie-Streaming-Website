@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import prisma from '../config/db';
+import { prisma } from '../../lib/prisma';
 import { AppError } from '../middleware/errorHandler';
 import type { RegisterBody, LoginBody, AuthPayload } from '../types/index';
 
@@ -29,8 +29,8 @@ export async function register(
 
     const hashed = await bcrypt.hash(password, 12);
     const user = await prisma.user.create({
-      data: { email, password: hashed, name },
-    });
+      data: { email, password: hashed, name: name ?? null },
+    })
 
     const token = signToken({ userId: user.id, email: user.email, isPremium: user.isPremium });
 
