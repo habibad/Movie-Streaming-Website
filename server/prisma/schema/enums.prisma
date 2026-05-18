@@ -1,7 +1,7 @@
 enum AuthProvider {
   credential
   google
-  apple
+  facebook
 }
 
 enum UserRole {

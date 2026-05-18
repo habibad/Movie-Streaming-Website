@@ -59,6 +59,7 @@ export interface User {
   name?: string;
   avatar?: string;
   isPremium: boolean;
+  role: 'ADMIN' | 'MODERATOR' | 'USER';
   createdAt: string;
 }
 
@@ -296,5 +297,17 @@ export interface AuthResponse {
   token: string;
 }
 
+export interface ResendCodePayload {
+  email: string;
+  purpose?: 'signup' | 'reset';
+}
+
+/** API envelope returned by the backend. */
+export interface ApiEnvelope<T> {
+  success: true;
+  data: T;
+  message?: string;
+}
+
 /** Provider for the SSO buttons on the signup screen */
-export type AuthProvider = 'google' | 'apple';
+export type AuthProvider = 'google' | 'facebook';

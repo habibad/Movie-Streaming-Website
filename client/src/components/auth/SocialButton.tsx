@@ -30,20 +30,31 @@ function GoogleIcon(): JSX.Element {
   );
 }
 
-function AppleIcon(): JSX.Element {
+function FacebookIcon(): JSX.Element {
   return (
-    <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor" aria-hidden="true">
-      <path d="M17.05 12.04c-.03-2.83 2.31-4.19 2.42-4.25-1.32-1.92-3.37-2.18-4.1-2.21-1.75-.18-3.41 1.03-4.3 1.03-.89 0-2.26-1-3.71-.97-1.91.03-3.67 1.11-4.65 2.81-1.98 3.43-.51 8.52 1.42 11.31.94 1.37 2.07 2.9 3.55 2.85 1.42-.06 1.96-.92 3.68-.92 1.72 0 2.21.92 3.71.89 1.53-.03 2.5-1.39 3.44-2.77 1.08-1.59 1.53-3.13 1.56-3.21-.03-.02-2.99-1.15-3.02-4.56ZM14.23 3.79c.78-.94 1.31-2.25 1.16-3.55-1.12.05-2.48.74-3.29 1.68-.72.83-1.36 2.17-1.19 3.45 1.26.1 2.54-.64 3.32-1.58Z" />
+    <svg viewBox="0 0 24 24" className="w-5 h-5" aria-hidden="true">
+      <path
+        fill="#1877F2"
+        d="M24 12c0-6.627-5.373-12-12-12S0 5.373 0 12c0 5.99 4.388 10.954 10.125 11.854V15.47H7.078V12h3.047V9.356c0-3.007 1.792-4.668 4.533-4.668 1.312 0 2.686.234 2.686.234v2.953h-1.513c-1.491 0-1.956.925-1.956 1.874V12h3.328l-.532 3.47h-2.796v8.385C19.612 22.954 24 17.99 24 12Z"
+      />
+      <path
+        fill="#fff"
+        d="m16.671 15.47.532-3.47h-3.328V9.749c0-.949.465-1.874 1.956-1.874h1.513V4.922s-1.374-.234-2.686-.234c-2.741 0-4.533 1.661-4.533 4.668V12H7.078v3.47h3.047v8.385a12.06 12.06 0 0 0 3.75 0V15.47h2.796Z"
+      />
     </svg>
   );
 }
 
 const LABELS: Record<AuthProvider, string> = {
   google: 'GOOGLE',
-  apple:  'APPLE',
+  facebook: 'FACEBOOK',
 };
 
-export default function SocialButton({ provider, onClick, disabled }: SocialButtonProps): JSX.Element {
+export default function SocialButton({
+  provider,
+  onClick,
+  disabled,
+}: SocialButtonProps): JSX.Element {
   return (
     <button
       type="button"
@@ -56,7 +67,7 @@ export default function SocialButton({ provider, onClick, disabled }: SocialButt
                  disabled:opacity-50 disabled:cursor-not-allowed
                  transition-all"
     >
-      {provider === 'google' ? <GoogleIcon /> : <AppleIcon />}
+      {provider === 'google' ? <GoogleIcon /> : <FacebookIcon />}
       {LABELS[provider]}
     </button>
   );

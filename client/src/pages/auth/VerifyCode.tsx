@@ -1,21 +1,20 @@
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Unlock, Clock } from 'lucide-react';
-import AuthCard      from '@/components/auth/AuthCard';
-import OtpInput      from '@/components/auth/OtpInput';
-import BackToLogin   from '@/components/auth/BackToLogin';
+import AuthCard from '@/components/auth/AuthCard';
+import OtpInput from '@/components/auth/OtpInput';
+import BackToLogin from '@/components/auth/BackToLogin';
 import { useCountdown } from '@/hooks/useCountdown';
-import { verifyCode, requestPasswordReset } from '@/utils/authApi';
+import { verifyCode, resendCode } from '@/utils/authApi';
+import { useAuth } from '@/context/AuthContext';
 
-/* Location-state shape passed in from Sign Up / Forgot Password screens */
 interface RouteState {
   email?: string;
   flow?: 'signup' | 'reset';
 }
 
-const CODE_TTL_SECONDS = 114; // matches the 01:54 shown in the design
+const CODE_TTL_SECONDS = 600; // 10 minutes — matches the server-side TTL
 
-/** Mask "marwen@cinelens.com" → "m***@cinelens.com" for display */
 function maskEmail(email: string): string {
   if (!email.includes('@')) return email;
   const [local, domain] = email.split('@');
@@ -27,6 +26,7 @@ export default function VerifyCode(): JSX.Element {
   const navigate = useNavigate();
   const { state } = useLocation();
   const { email = '', flow = 'signup' } = (state as RouteState) ?? {};
+  const { refresh } = useAuth();
 
   const [code, setCode] = useState<string>('');
   const [submitting, setSubmitting] = useState<boolean>(false);
@@ -40,15 +40,19 @@ export default function VerifyCode(): JSX.Element {
     setError('');
 
     try {
-      await verifyCode({ email, code });
+      await verifyCode({ email, code, purpose: flow });
       if (flow === 'reset') {
         navigate('/reset-password', { state: { email, code } });
       } else {
-        // Signup verification — straight into the app
+        // Signup verification — refresh the user so emailVerified=true is reflected
+        await refresh();
         navigate('/');
       }
-    } catch {
-      setError('Invalid or expired code.');
+    } catch (err) {
+      const msg =
+        (err as { response?: { data?: { error?: string } } })?.response?.data?.error ??
+        'Invalid or expired code.';
+      setError(msg);
     } finally {
       setSubmitting(false);
     }
@@ -57,7 +61,7 @@ export default function VerifyCode(): JSX.Element {
   const handleResend = async (): Promise<void> => {
     if (!email) return;
     try {
-      await requestPasswordReset({ email });
+      await resendCode({ email, purpose: flow });
       setCode('');
       setError('');
       reset();
@@ -74,7 +78,9 @@ export default function VerifyCode(): JSX.Element {
         <>
           Enter the 6-digit code sent to
           <br />
-          <span className="text-white font-medium">{maskEmail(email || 'm***@cinelens.com')}</span>
+          <span className="text-white font-medium">
+            {maskEmail(email || 'your email')}
+          </span>
         </>
       }
       footer={<BackToLogin />}
@@ -83,11 +89,11 @@ export default function VerifyCode(): JSX.Element {
         <OtpInput
           value={code}
           onChange={setCode}
+          
           onComplete={handleVerify}
           disabled={submitting || expired}
         />
 
-        {/* Countdown */}
         <p className="flex items-center justify-center gap-1.5 text-xs font-semibold tracking-widest text-muted uppercase">
           <Clock className="w-3.5 h-3.5" aria-hidden="true" />
           Code expires in{' '}
@@ -115,8 +121,7 @@ export default function VerifyCode(): JSX.Element {
           <button
             type="button"
             onClick={handleResend}
-            className="mt-1 text-xs text-white font-semibold tracking-widest underline underline-offset-4
-                       hover:text-brand transition-colors"
+            className="mt-1 text-xs text-white font-semibold tracking-widest underline underline-offset-4 hover:text-brand transition-colors"
           >
             RESEND CODE
           </button>

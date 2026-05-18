@@ -5,39 +5,38 @@ import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
 
 import { errorHandler } from './middleware/errorHandler';
-import actorRouter from './router/index'
+import actorRouter from './router/index';
 import authRouter from './routes/authRoutes';
 
-
-
 const app = express();
-app.use('/api/v1/auth', authRouter);
 
 // ── Middleware ───────────────────────────────────────────────────
+// IMPORTANT: trust proxy is needed so req.ip is the real client IP
+// when running behind a reverse proxy (nginx, render, fly, etc.)
+app.set('trust proxy', 1);
+
 app.use(
   cors({
     origin: process.env.CLIENT_URL ?? 'http://localhost:5173',
     credentials: true,
-  })
+  }),
 );
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-
 if (process.env.NODE_ENV !== 'test') {
   app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
 }
 
-app.use("/api/v1", actorRouter);
+// ── Routes ───────────────────────────────────────────────────────
 app.use('/api/v1/auth', authRouter);
+app.use('/api/v1', actorRouter);
 
 // ── Health check ─────────────────────────────────────────────────
 app.get('/api/health', (_req, res) => {
   res.json({ ok: true, env: process.env.NODE_ENV, ts: new Date().toISOString() });
 });
-
-
 
 // ── 404 ──────────────────────────────────────────────────────────
 app.use((_req, res) => {

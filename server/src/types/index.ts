@@ -4,7 +4,8 @@ import type { Request } from 'express';
 export interface AuthPayload {
   userId: string;
   email: string;
-  isPremium: boolean;
+  sessionId: string;
+  role: 'ADMIN' | 'MODERATOR' | 'USER';
   iat?: number;
   exp?: number;
 }
@@ -26,7 +27,35 @@ export interface ErrorResponse {
   details?: unknown;
 }
 
-/* ── Request body types ──────────────────────────────────────── */
+/* ── Auth request body types ─────────────────────────────────── */
+export interface RegisterBody {
+  email: string;
+  password: string;
+  name: string;
+}
+
+export interface LoginBody {
+  email: string;
+  password: string;
+}
+
+export interface ForgotPasswordBody {
+  email: string;
+}
+
+export interface VerifyCodeBody {
+  email: string;
+  code: string;
+  purpose?: 'signup' | 'reset';
+}
+
+export interface ResetPasswordBody {
+  email: string;
+  code: string;
+  newPassword: string;
+}
+
+/* ── Other request body types ────────────────────────────────── */
 export interface CreateMovieBody {
   title: string;
   description?: string;
@@ -51,19 +80,8 @@ export interface CreateEpisodeBody {
   title: string;
   description?: string;
   thumbnail: string;
-  scheduledAt: string; // ISO string
+  scheduledAt: string;
   endsAt: string;
-}
-
-export interface RegisterBody {
-  email: string;
-  password: string;
-  name?: string;
-}
-
-export interface LoginBody {
-  email: string;
-  password: string;
 }
 
 export interface MovieQuery {
@@ -71,4 +89,15 @@ export interface MovieQuery {
   featured?: string;
   page?: string;
   limit?: string;
+}
+
+/* ── Public user shape returned to the client ────────────────── */
+export interface PublicUser {
+  id: string;
+  email: string;
+  name: string;
+  image: string | null;
+  emailVerified: boolean;
+  role: 'ADMIN' | 'MODERATOR' | 'USER';
+  createdAt: Date;
 }
