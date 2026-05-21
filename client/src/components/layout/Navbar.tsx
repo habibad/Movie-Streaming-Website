@@ -30,6 +30,7 @@ export default function Navbar(): JSX.Element {
         ? 'bg-bg-card text-white'
         : 'text-gray-400 hover:bg-bg-card hover:text-white'
     }`;
+    console.log('Avatar src:', user?.image);
 
   /* Fallback avatar: initials via ui-avatars when no avatar URL */
   const avatarSrc = user?.avatar
@@ -74,8 +75,9 @@ export default function Navbar(): JSX.Element {
             <div className="hidden sm:flex items-center gap-3 bg-bg-card border border-line
                             rounded-full pl-1 pr-2 py-1 hover:border-gray-500 transition-colors group">
               <img
-                src={avatarSrc}
+                src={user.image ?? avatarSrc}
                 alt={user.name ?? 'User avatar'}
+                
                 className="w-8 h-8 rounded-full object-cover shrink-0"
               />
               <div className="leading-tight">

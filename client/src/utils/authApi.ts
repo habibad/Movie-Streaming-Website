@@ -34,7 +34,8 @@ export async function logout(): Promise<void> {
 
 export async function getMe(): Promise<User> {
   const res = await api.get<ApiEnvelope<User>>('/auth/me');
-  return res.data.data;
+  const userData = res.data.data;
+  return userData;
 }
 
 /* ── Password reset flow ───────────────────────────────────── */

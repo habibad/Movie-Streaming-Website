@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from 'express';
-import prisma from '../config/db';
+import {prisma} from '../../lib/prisma';
 import { AppError } from '../middleware/errorHandler';
 import type { CreateMovieBody, MovieQuery } from '../types/index';
 
