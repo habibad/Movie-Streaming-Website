@@ -266,6 +266,15 @@ exports.Prisma.ModerationLogScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.VideoFileScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  provider: 'provider',
+  size: 'size',
+  videoUrl: 'videoUrl',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.MovieScalarFieldEnum = {
   id: 'id',
   title: 'title',
@@ -586,6 +595,7 @@ exports.Prisma.ModelName = {
   InterviewAsset: 'InterviewAsset',
   InterviewSeries: 'InterviewSeries',
   ModerationLog: 'ModerationLog',
+  VideoFile: 'VideoFile',
   Movie: 'Movie',
   MediaAsset: 'MediaAsset',
   MovieCast: 'MovieCast',

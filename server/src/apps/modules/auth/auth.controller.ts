@@ -482,14 +482,23 @@ export const loginInitiate = asyncHandler(async (req: Request, res: Response) =>
     });
 
     // 4. Send the OTP to the user's email
-    await sendOTPEmail(email, otp, "sign-in");
+    const emailResult = await sendOTPEmail(email, otp, "sign-in");
+    const debugOtp = emailResult?.debugOtp;
+
+    if (debugOtp) {
+      console.log(`[LOGIN INITIATE] OTP for ${email}: ${debugOtp}`);
+    }
 
     return res.status(200).json({
       success: true,
-      message: "OTP sent to your email. Please verify OTP to complete login.",
+      message:
+        debugOtp && process.env.NODE_ENV !== "production"
+          ? "OTP generated in development mode. Use the returned code to continue login."
+          : "OTP sent to your email. Please verify OTP to complete login.",
       data: {
         email,
         requireOTP: true,
+        ...(debugOtp ? { debugOtp } : {}),
       },
     });
   } catch (error) {

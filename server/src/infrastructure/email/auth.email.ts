@@ -7,16 +7,30 @@ const getTransporter = () => {
     port: config.email.port,
     secure: config.email.port === 465,
   };
+
   if (config.email.user && config.email.password) {
     mailConfig.auth = {
       user: config.email.user,
       pass: config.email.password,
     };
   }
+
   return nodemailer.createTransport(mailConfig);
 };
 
 const transporter = getTransporter();
+
+const isDevFallbackRequired = () => {
+  const user = (config.email.user || "").trim();
+  const password = (config.email.password || "").trim();
+
+  return (
+    !user ||
+    !password ||
+    user === "demo@example.com" ||
+    password === "demo-password"
+  );
+};
 
 export const sendOTPEmail = async (email: string, otp: string, type: string) => {
   const subjectMap: Record<string, string> = {
@@ -26,6 +40,14 @@ export const sendOTPEmail = async (email: string, otp: string, type: string) => 
   };
 
   const subject = subjectMap[type] || "Verification Code";
+
+  if (isDevFallbackRequired()) {
+    console.warn(
+      `[Email Service] SMTP credentials are not configured. Using development fallback for ${type}. OTP: ${otp}`
+    );
+    console.log(`[DEV OTP] ${type} OTP for ${email}: ${otp}`);
+    return { skipped: true, debugOtp: otp };
+  }
 
   const mailOptions = {
     from: `"Blacktree TV" <${config.email.user || "noreply@blacktree.tv"}>`,
@@ -49,6 +71,7 @@ export const sendOTPEmail = async (email: string, otp: string, type: string) => 
   try {
     await transporter.sendMail(mailOptions);
     console.log(`[Email Service] OTP sent to ${email} for ${type}`);
+    return { skipped: false, debugOtp: otp };
   } catch (error) {
     console.error("[Email Service] Failed to send email:", error);
     throw new Error("Failed to send verification email.");

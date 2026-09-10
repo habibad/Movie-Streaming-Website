@@ -57,7 +57,6 @@ model User {
   watchlist    Watchlist[]
 
   @@unique([email])
-  @@map("user")
 }
 
 model Session {
@@ -77,7 +76,6 @@ model Session {
 
   @@unique([token])
   @@index([userId])
-  @@map("session")
 }
 
 model Account {
@@ -102,7 +100,6 @@ model Account {
   password String?
 
   @@index([userId])
-  @@map("account")
 }
 
 model Verification {
@@ -115,7 +112,6 @@ model Verification {
   expiresAt  DateTime
 
   @@index([identifier])
-  @@map("verification")
 }
 
 model Jwks {
@@ -125,8 +121,6 @@ model Jwks {
   privateKey String
 
   createdAt DateTime @default(now())
-
-  @@map("jwks")
 }
 
 model LiveChat {
@@ -391,6 +385,18 @@ model ModerationLog {
   @@index([targetUserId])
   @@index([action])
   @@index([createdAt])
+}
+
+model VideoFile {
+  id String @id @default(cuid())
+
+  title    String
+  provider String
+  size     Float?
+
+  videoUrl String
+
+  createdAt DateTime @default(now())
 }
 
 model Movie {

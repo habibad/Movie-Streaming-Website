@@ -3,5 +3,8 @@
   "scripts": {
     "dev": "concurrently \"pnpm --filter ./web dev\" \"pnpm --filter ./server dev\"",
     "build": "pnpm -r build"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.5"
   }
 }

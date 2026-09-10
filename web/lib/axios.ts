@@ -1,8 +1,14 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || (typeof window !== "undefined" ? window.location.origin + "/api/v1" : (process.env.BACKEND_URL ? process.env.BACKEND_URL + "/api/v1" : "http://localhost:5000/api/v1")),
-  withCredentials: true, // Crucial for Better Auth cookies/sessions
+  baseURL:
+    process.env.NEXT_PUBLIC_API_URL ||
+    (typeof window !== "undefined"
+      ? `${window.location.origin}/api/v1`
+      : process.env.BACKEND_URL
+        ? `${process.env.BACKEND_URL}/api/v1`
+        : "http://localhost:3000/api/v1"),
+  withCredentials: true,
   headers: {
     "Content-Type": "application/json",
   },

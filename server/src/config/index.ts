@@ -45,7 +45,7 @@ const envSchema = z.object({
 
   // Better Auth
   BETTER_AUTH_SECRET: z.string(),
-  BETTER_AUTH_URL: z.string().url().default("http://localhost:5000/api/auth"),
+  BETTER_AUTH_URL: z.string().url().default("http://localhost:3000/api/auth"),
   AUTH_GOOGLE_ID: z.string().optional(),
   AUTH_GOOGLE_SECRET: z.string().optional(),
 

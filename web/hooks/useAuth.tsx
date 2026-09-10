@@ -77,6 +77,11 @@ export const useAuth = () => {
       const { data } = await api.post("/auth/login-initiate", payload);
       return data;
     },
+    onSuccess: (data) => {
+      if (data?.data?.debugOtp) {
+        console.log("[DEV OTP] Temporary login OTP:", data.data.debugOtp);
+      }
+    },
     onError: (err: AxiosError<ApiErrorResponse>) => {
       toast.error(err.response?.data?.message || "Invalid credentials");
     },

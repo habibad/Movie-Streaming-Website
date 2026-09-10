@@ -37,7 +37,6 @@ model User {
   watchlist    Watchlist[]
 
   @@unique([email])
-  @@map("user")
 }
 
 model Session {
@@ -57,7 +56,6 @@ model Session {
 
   @@unique([token])
   @@index([userId])
-  @@map("session")
 }
 
 model Account {
@@ -82,7 +80,6 @@ model Account {
   password String?
 
   @@index([userId])
-  @@map("account")
 }
 
 model Verification {
@@ -95,7 +92,6 @@ model Verification {
   expiresAt  DateTime
 
   @@index([identifier])
-  @@map("verification")
 }
 
 model Jwks {
@@ -105,6 +101,4 @@ model Jwks {
   privateKey String
 
   createdAt DateTime @default(now())
-
-  @@map("jwks")
 }
