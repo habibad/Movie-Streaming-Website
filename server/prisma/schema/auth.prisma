@@ -13,6 +13,10 @@ model User {
 
   role UserRole @default(USER)
 
+  banned     Boolean   @default(false)
+  banReason  String?
+  banExpires DateTime?
+
   profile UserProfile?
 
   subscription   Subscription[]
@@ -27,7 +31,10 @@ model User {
 
   roleMappings UserRoleMapping[]
 
-  subscribed  Subscriber[]
+  subscribed Subscriber[]
+
+  watchHistory WatchHistory[]
+  watchlist    Watchlist[]
 
   @@unique([email])
   @@map("user")

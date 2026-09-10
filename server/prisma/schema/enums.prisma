@@ -1,7 +1,7 @@
 enum AuthProvider {
   credential
   google
-  facebook
+  apple
 }
 
 enum UserRole {
@@ -61,4 +61,41 @@ enum SubscriberStatus {
   UNSUBSCRIBED
   BOUNCED
   PENDING
+}
+
+enum MediaAssetType {
+  THUMBNAIL
+  POSTER
+  BANNER
+  VIDEO
+  TRAILER
+  SUBTITLE
+}
+
+enum CastRoleType {
+  ACTOR
+  DIRECTOR
+  PRODUCER
+  WRITER
+}
+
+enum ContentStatus {
+  DRAFT
+  REVIEW
+  PUBLISHED
+  ARCHIVED
+}
+
+enum Visibility {
+  PUBLIC
+  PRIVATE
+  UNLISTED
+}
+
+
+enum InterviewAssetType {
+  VIDEO
+  THUMBNAIL
+  SUBTITLE
+  AUDIO
 }

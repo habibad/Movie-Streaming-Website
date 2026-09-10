@@ -4,7 +4,7 @@
     // File Layout
     // "rootDir": "./src",
     // "outDir": "./dist",
- 
+
     // Environment Settings
     // See also https://aka.ms/tsconfig/module
     "module": "ESNext",
@@ -15,16 +15,16 @@
     // "lib": ["esnext"],
     // "types": ["node"],
     // and npm install -D @types/node
- 
+
     // Other Outputs
     "sourceMap": true,
     "declaration": true,
     "declarationMap": true,
- 
+
     // Stricter Typechecking Options
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
- 
+
     // Style Options
     // "noImplicitReturns": true,
     // "noImplicitOverride": true,
@@ -34,11 +34,11 @@
     // "noPropertyAccessFromIndexSignature": true,
     "rootDir": ".",
     "outDir": "./dist",
- 
+
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
- 
+
     // Recommended Options
     "strict": true,
     "jsx": "react-jsx",
@@ -47,6 +47,9 @@
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
     "skipLibCheck": true,
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
   "include": ["src", "prisma/**/*.ts", "prisma.config.ts"],
   "exclude": ["node_modules", "dist"]
