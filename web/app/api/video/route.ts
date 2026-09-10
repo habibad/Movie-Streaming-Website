@@ -1,6 +1,39 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { promises as fs } from "fs";
+import path from "path";
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+
+const normalizeVideoFromJson = (item: any, index: number) => ({
+  id:
+    item?.id ||
+    `cloudflare-${index}-${(item?.title || item?.videoUrl || `video-${index}`)
+      .toString()
+      .replace(/[^a-zA-Z0-9-_]/g, "") || index}`,
+  title: item?.title || `Cloudflare Video ${index + 1}`,
+  provider: (item?.platform || item?.provider || "Cloudflare").toString(),
+  videoUrl: item?.videoUrl || "",
+  size:
+    typeof item?.size === "number"
+      ? item.size
+      : typeof item?.runtimeSeconds === "number"
+        ? item.runtimeSeconds
+        : null,
+  createdAt: item?.createdAt || new Date().toISOString(),
+});
+
+const getFallbackVideos = async () => {
+  try {
+    const jsonPath = path.join(process.cwd(), "data", "parsed", "video.json");
+    const raw = await fs.readFile(jsonPath, "utf8");
+    const parsed = JSON.parse(raw);
+    const items = Array.isArray(parsed) ? parsed : [];
+    return items.map(normalizeVideoFromJson);
+  } catch (error) {
+    console.warn("Video fallback data unavailable:", error);
+    return [];
+  }
+};
 
 /**
  * GET /api/video
@@ -28,7 +61,7 @@ export async function GET(request: NextRequest) {
     if (search) {
       where.title = {
         contains: search,
-        mode: "insensitive", // case-insensitive search
+        mode: "insensitive",
       };
     }
 
@@ -47,16 +80,90 @@ export async function GET(request: NextRequest) {
       orderBy.title = "asc";
     }
 
-    // Get total count and records in parallel
-    const [total, videos] = await Promise.all([
-      prisma.videoFile.count({ where }),
-      prisma.videoFile.findMany({
-        where,
-        orderBy,
-        skip: (currentPage - 1) * currentLimit,
-        take: currentLimit,
-      }),
-    ]);
+    let total = 0;
+    let videos: any[] = [];
+
+    try {
+      const [count, data] = await Promise.all([
+        prisma.videoFile.count({ where }),
+        prisma.videoFile.findMany({
+          where,
+          orderBy,
+          skip: (currentPage - 1) * currentLimit,
+          take: currentLimit,
+        }),
+      ]);
+
+      total = count;
+      videos = data;
+    } catch (dbError) {
+      console.warn("Prisma video lookup failed, using fallback Cloudflare list.", dbError);
+      const fallbackVideos = await getFallbackVideos();
+      const normalizedSearch = search.trim().toLowerCase();
+      const filtered = fallbackVideos.filter((video) => {
+        const matchesProvider = !provider || video.provider.toLowerCase() === provider.toLowerCase();
+        const matchesSearch = !normalizedSearch || video.title.toLowerCase().includes(normalizedSearch);
+        return matchesProvider && matchesSearch;
+      });
+
+      const ordered = [...filtered].sort((a, b) => {
+        const left = a.title.toLowerCase();
+        const right = b.title.toLowerCase();
+        return order === "desc" ? right.localeCompare(left) : left.localeCompare(right);
+      });
+
+      const start = (currentPage - 1) * currentLimit;
+      const paged = ordered.slice(start, start + currentLimit);
+
+      return NextResponse.json({
+        success: true,
+        data: paged,
+        serverTime: Date.now(),
+        pagination: {
+          total: ordered.length,
+          page: currentPage,
+          limit: currentLimit,
+          totalPages: Math.max(1, Math.ceil(ordered.length / currentLimit)),
+          hasNextPage: start + currentLimit < ordered.length,
+          hasPrevPage: currentPage > 1,
+        },
+      });
+    }
+
+    if (videos.length === 0) {
+      const fallbackVideos = await getFallbackVideos();
+      if (fallbackVideos.length > 0) {
+        const normalizedSearch = search.trim().toLowerCase();
+        const filtered = fallbackVideos.filter((video) => {
+          const matchesProvider = !provider || video.provider.toLowerCase() === provider.toLowerCase();
+          const matchesSearch = !normalizedSearch || video.title.toLowerCase().includes(normalizedSearch);
+          return matchesProvider && matchesSearch;
+        });
+
+        const ordered = [...filtered].sort((a, b) => {
+          const left = a.title.toLowerCase();
+          const right = b.title.toLowerCase();
+          return order === "desc" ? right.localeCompare(left) : left.localeCompare(right);
+        });
+
+        const start = (currentPage - 1) * currentLimit;
+        const paged = ordered.slice(start, start + currentLimit);
+
+        return NextResponse.json({
+          success: true,
+          data: paged,
+          serverTime: Date.now(),
+          pagination: {
+            total: ordered.length,
+            page: currentPage,
+            limit: currentLimit,
+            totalPages: Math.max(1, Math.ceil(ordered.length / currentLimit)),
+            hasNextPage: start + currentLimit < ordered.length,
+            hasPrevPage: currentPage > 1,
+          },
+        });
+      }
+    }
 
     const totalPages = Math.ceil(total / currentLimit);
 

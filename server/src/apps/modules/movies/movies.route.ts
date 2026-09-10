@@ -2,7 +2,7 @@ import { Router } from "express";
 import { protect, restrictTo } from "../../middleware/auth.middleware";
 import * as moviesController from "./movies.controller";
 
-const router = Router();
+const router: ReturnType<typeof Router> = Router();
 
 // --- PUBLIC ROUTES ---
 // Available to guests and general visitors of the website

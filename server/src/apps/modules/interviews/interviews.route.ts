@@ -2,7 +2,7 @@ import { Router } from "express";
 import { protect, restrictTo } from "../../middleware/auth.middleware";
 import * as interviewsController from "./interviews.controller";
 
-const router = Router();
+const router: ReturnType<typeof Router> = Router();
 
 router.get("/", interviewsController.getInterviews);
 

@@ -7,7 +7,7 @@ import {
   getActivity,
 } from "./dashboard.controller";
 
-const router = Router();
+const router: ReturnType<typeof Router> = Router();
 
 // Secure all dashboard endpoints for staff (ADMIN and MODERATOR) only
 router.use(protect);

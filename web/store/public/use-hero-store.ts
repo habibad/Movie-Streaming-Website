@@ -29,7 +29,7 @@ export const useHeroStore = create<HeroState>((set) => ({
     },
     {
       id: "2",
-      user: "Masrafi",
+      user: "Anikur",
       message: "Hello everyone!",
       color: "#ffffff",
     },

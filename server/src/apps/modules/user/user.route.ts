@@ -9,7 +9,7 @@ import {
   getCurrentUserProfile,
 } from "./user.controller";
 
-const router = Router();
+const router: ReturnType<typeof Router> = Router();
 
 router.get("/all-user", protect, restrictTo("ADMIN", "MODERATOR"), getAllUsers);
 router.get("/user/:id", protect, restrictTo("ADMIN", "MODERATOR", "USER"), getUserById);

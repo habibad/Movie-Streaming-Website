@@ -5,7 +5,7 @@ import dashboardRouter from "../apps/modules/dashboard/dashboard.route";
 import moviesRouter from "../apps/modules/movies/movies.route";
 import interviewsRouter from "../apps/modules/interviews/interviews.route";
 
-const router = Router();
+const router: ReturnType<typeof Router> = Router();
 
 router.use("/auth", authRouter);
 router.use("/users", userRouter);

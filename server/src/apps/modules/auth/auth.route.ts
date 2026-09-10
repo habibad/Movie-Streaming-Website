@@ -3,7 +3,7 @@ import { protect } from "../../middleware/auth.middleware";
 import * as authController from "./auth.controller";
 import prisma from "../../../infrastructure/database/connection";
 
-const authRouter = Router();
+const authRouter: ReturnType<typeof Router> = Router();
 
 // 1. Custom Signup/Login Routes
 authRouter.post("/sign-up", express.json(), authController.signUp);

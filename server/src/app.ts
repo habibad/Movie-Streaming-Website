@@ -1,6 +1,6 @@
 import compression from "compression";
 import cors from "cors";
-import type { NextFunction, Request, Response } from "express";
+import type { Express, NextFunction, Request, Response } from "express";
 import express from "express";
 import rateLimit from "express-rate-limit";
 import helmet from "helmet";
@@ -13,7 +13,7 @@ import config from "./config";
 import routes from "./routes";
 import { AppError } from "./utils/AppError";
 
-const app = express();
+const app: Express = express();
 
 app.set("trust proxy", config.nodeEnv === "production" ? 1 : false);
 
